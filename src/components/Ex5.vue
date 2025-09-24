@@ -6,19 +6,31 @@ export default {
             job: '',
             bio: '',
             imageUrl: '/assets/head1.jpg',
-            bgColor: '#f5f5f5',
-            textColor: '#333',
+            bgColor: 'rgb(51, 51, 51)',   // Start on dark theme
+            textColor: '#fff',
             themes: ['dark', 'light', 'neon'],
             currentThemeIndex: 0
         }
     },
-    
     methods: {
-        // Add code here
-
+        cycleTheme() {
+            this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+            const theme = this.themes[this.currentThemeIndex];
+            if (theme === 'dark') {
+                this.bgColor = 'rgb(51, 51, 51)';
+                this.textColor = '#fff';
+            } else if (theme === 'light') {
+                this.bgColor = 'rgb(255, 255, 255)';
+                this.textColor = '#000';
+            } else if (theme === 'neon') {
+                this.bgColor = 'rgb(57, 255, 20)';
+                this.textColor = '#000';
+            }
+        }
     }
 }
 </script>
+
 
 <template>
     <!-- Form Section -->
@@ -39,7 +51,7 @@ export default {
             <input id="imageUrl" v-model="imageUrl" placeholder="https://example.com/me.jpg"><br><br>
 
             <label>Theme Presets:</label><br>
-            <button class="theme-button">Cycle theme</button> <!-- click button to cycle through the themes -->
+            <button class="theme-button" @click="cycleTheme">Cycle theme</button> <!-- click button to cycle through the themes -->
             <!-- Dark theme: background-color: #333, text-color: #fff -->
             <!-- Light theme: background-color: #fff, text-color: #000  -->
             <!-- Neon theme: background-color: #39ff14, text-color: #000 -->
@@ -48,7 +60,7 @@ export default {
         <!-- Preview Section -->
         <div class="preview-section">
             <h2>Live Preview</h2>
-            <div class="preview-card"> <!-- Add code here to set background color and text color -->
+            <div class="preview-card" :style="{backgroundColor: bgColor, color: textColor}"> <!-- Add code here to set background color and text color -->
                 <img :src="imageUrl" class="preview-img">
                 <h3>{{ name || 'Your Name' }}</h3>
                 <h4>{{ job || 'Job Title' }}</h4>
